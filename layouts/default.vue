@@ -26,6 +26,7 @@
         </v-btn>
       </nuxt-link>
       <v-btn
+        v-if="$auth.user.is_admin"
         outlined
         color="primary"
         @click="$nuxt.$emit('open-add-user')"
