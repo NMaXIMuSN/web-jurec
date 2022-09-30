@@ -15,6 +15,7 @@
       </div>
       <v-spacer />
       <nuxt-link
+        v-if="$auth.user.is_admin"
         to="/admin"
       >
         <v-btn
