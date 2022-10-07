@@ -25,6 +25,11 @@
           <template #item.office="{ item }">
             {{ getListName(item) }}
           </template>
+          <template v-slot:item.office="{ item }">
+            <template v-if="item.office">
+              {{ item.office && item.office.title ? item.office.title : '-' }}
+            </template>
+          </template>
           <template v-slot:item.actions="{ item }">
             <v-icon
               :color="!item.is_active ? 'white' : 'black'"
@@ -132,7 +137,7 @@ export default {
   methods: {
     async swapActive(item) {
       await this.$axios.post('toggle_activity', {
-        user_id: item.id
+        id: item.id
       })
         .then(() => {
           this.$store.dispatch('users/fetchUsersList')
@@ -156,11 +161,13 @@ export default {
       if (!item.is_active) {
         classes.push('row-table-no-active')
       }
+      else if (item.role && item.role.title === 'Administrator') {
+        classes.push('row-table-administrator')
+      }
 
       return classes.join(' ')
     }
   },
-
 }
 </script>
 
@@ -173,10 +180,18 @@ export default {
   .row-table {
     transition: all .3s ease;
     &-no-active {
-      background: #FF6A55;
+      background: #FF6A55 !important;
       color: #fff;
       &:hover {
         background: #FF6A55 !important;
+      }
+    }
+
+    &-administrator {
+      background: #4adb3a;
+
+      &:hover {
+        background: #4adb3a !important;
       }
     }
   }

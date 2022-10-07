@@ -64,6 +64,7 @@
       </div>
       <div>
         <v-btn
+          color="primary"
           @click="accept"
         >
           Accept

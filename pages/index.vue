@@ -25,6 +25,7 @@
 <script>
 export default {
   name: 'IndexPage',
+  auth: 'guest',
   async asyncData({store, $auth}) {
     await store.dispatch('userAuth/fetchAuthList')
     await $auth.fetchUser()

@@ -77,6 +77,7 @@
           <v-spacer />
           <v-btn
             outlined
+            color="red"
             @click="isOpen = false"
           >
             Cancel

@@ -23,6 +23,10 @@ export default {
 
   plugins: [],
 
+  router: {
+    middleware: ['auth']
+  },  
+
   components: true,
 
   buildModules: [
@@ -62,7 +66,8 @@ export default {
     redirect: {
       logout: '/login',
       callback: '/login',
-      home: '/',
+      login: null,
+      home: null,
     }
   },
 

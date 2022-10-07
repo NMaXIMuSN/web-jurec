@@ -5,41 +5,18 @@
       elevation="0"
       app
     >
-      <div class="logo--wrpa">
-        <nuxt-link to="/">
-          <img
-            src="/logo/logo.png"
-            alt="logo"
-          >
-        </nuxt-link>
-      </div>
-      <v-spacer />
-      <nuxt-link
-        v-if="$auth.user.is_admin"
-        to="/admin"
-      >
-        <v-btn
-          outlined
-          color="primary"
-        >
-          Admin panel
-        </v-btn>
-      </nuxt-link>
-      <v-btn
-        v-if="$auth.user.is_admin"
-        outlined
-        color="primary"
+      <div
+        class="header__text"
         @click="$nuxt.$emit('open-add-user')"
       >
-        add User
-      </v-btn>
-      <v-btn
-        color="red"
-        class="exit"
-        @click="$auth.logout()"
+        Add User
+      </div>
+      <div
+        class="header__text header__text-exit"
+        @click="logout"
       >
         Exit
-      </v-btn>
+      </div>
     </v-app-bar>
     <v-main>
       <Nuxt />
@@ -59,6 +36,11 @@ export default {
     isAuth() {
       return this.$auth.loggedIn
     },
+  },
+  methods: {
+    logout() {
+      this.$auth.logout()
+    }
   }
 }
 </script>
@@ -76,5 +58,28 @@ export default {
 
 .exit {
   color: $white;
+}
+
+.header__text {
+  cursor: pointer;
+  position: relative;
+
+  &-exit {
+    color: red;
+
+    &::after {
+     background-color: red !important; 
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0px;
+    width: 10px;
+    height: 1px;
+    left: 0;
+    background-color: #000;
+  }
 }
 </style>

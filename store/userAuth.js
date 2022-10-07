@@ -6,7 +6,6 @@ export const mutations = {
     state.authList = list.map((el) => {
       el.login_date = this.$dayjs(el.login_date).format('DD/MM/YYYY HH:mm')
       el.logout_date = this.$dayjs(el.logout_date).format('DD/MM/YYYY HH:mm')
-      el.time_spent = this.$dayjs.duration(+el.time_spent * 1000).format('HH:mm:ss')
 
       return el
     })

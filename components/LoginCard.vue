@@ -31,13 +31,41 @@
         type="password"
       />
     </div>
-    <v-btn
-      color="primary"
-      :disabled="disable"
-      @click="login"
+    <v-row
+      class="actions"
     >
-      Войти
-    </v-btn>
+      <v-col
+        cols="3"
+      >
+       <v-btn
+         color="primary"
+          :disabled="disable"
+          @click="login"
+        >
+          Lodin
+        </v-btn>
+      </v-col> 
+      <v-col
+        cols="3"
+      >
+        <a
+          href="https://www.google.ru"
+        >
+          <v-btn
+            color="red"
+          >
+            Exit
+          </v-btn>
+        </a>
+      </v-col> 
+    </v-row>
+   
+    
+    <dialog-error
+      v-model="isOpenError"
+      :time="timeLastLogin"
+      @confirm="nextPage"
+    />
   </div>
 </template>
 
@@ -53,6 +81,8 @@ export default {
       countError: 0,
       disable: false,
       secontWait: 10,
+      isOpenError: false,
+      timeLastLogin: '',
     }
   },
   watch: {
@@ -77,19 +107,31 @@ export default {
   methods: {
     login() {
         this.$auth.loginWith('local', { data: this.form })
-          .then(() => {
-            if (this.$auth.user.is_admin) {
-              this.$router.push('/admin')
-            }
-            else {
-              this.$router.push('/')
-            }
+          .then(async () => {
+            await this.$axios.get('is_graceful_logout')
+              .then(({data}) => {
+                if (!data.is_graceful_logout) {
+                  this.isOpenError = true
+                  this.timeLastLogin = data.last_login
+                }
+                else {
+                  this.nextPage()
+                }
+              })
           })
           .catch(({response}) => {
             this.errorMesage = response.data.msg
             this.countError++
           })
       },
+    nextPage() {
+      if (this.$auth.user.is_admin) {
+        this.$router.push('/admin')
+      }
+      else {
+        this.$router.push('/')
+      }
+    },
     logout() {
       this.$auth.logout()
     },
@@ -131,6 +173,11 @@ export default {
 
   &__row {
     width: 100%;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 </style>
