@@ -5,11 +5,27 @@
       elevation="0"
       app
     >
+      <template>
+        <div
+          v-if="$route.path === '/admin'"
+          class="header__text"
+          @click="$nuxt.$emit('open-add-user')"
+        >
+          Add User
+        </div>
+        <div
+          v-else
+          class="header__text"
+          @click="$router.push('/admin')"
+        >
+          Users
+        </div>
+      </template>
       <div
         class="header__text"
-        @click="$nuxt.$emit('open-add-user')"
+        @click="$router.push('/flight')"
       >
-        Add User
+        Flight
       </div>
       <div
         class="header__text header__text-exit"

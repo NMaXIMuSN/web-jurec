@@ -64,6 +64,7 @@
     <dialog-error
       v-model="isOpenError"
       :time="timeLastLogin"
+      :user-log-id="user_log_id"
       @confirm="nextPage"
     />
   </div>
@@ -83,6 +84,7 @@ export default {
       secontWait: 10,
       isOpenError: false,
       timeLastLogin: '',
+      user_log_id: null,
     }
   },
   watch: {
@@ -111,6 +113,7 @@ export default {
             await this.$axios.get('is_graceful_logout')
               .then(({data}) => {
                 if (!data.is_graceful_logout) {
+                  this.user_log_id = data.user_log_id
                   this.isOpenError = true
                   this.timeLastLogin = data.last_login
                 }

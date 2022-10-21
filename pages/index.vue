@@ -17,7 +17,15 @@
         :headers="headers"
         :item-class="getClass"
         :items="items"
-      />
+      >
+        <template
+          #item.crash_report="{item}"
+        >
+          <template v-if="item.crash_report">
+            {{ item.crash_report.reason }}
+          </template>
+        </template>
+      </v-data-table>
     </v-container>
   </div>
 </template>
@@ -25,6 +33,7 @@
 <script>
 export default {
   name: 'IndexPage',
+  middleware: ['auth'],
   auth: 'guest',
   async asyncData({store, $auth}) {
     await store.dispatch('userAuth/fetchAuthList')
@@ -48,7 +57,7 @@ export default {
         },
         {
           text: 'Unsuccessful logout reason',
-          value: 'reason',
+          value: 'crash_report',
         },
       ],
     }
@@ -81,7 +90,7 @@ export default {
     getClass(item) {
       const classes = []
 
-      if (item.reason) {
+      if (item.crash_report) {
         classes.push('table-error')
       }
 
@@ -104,12 +113,13 @@ export default {
 .crashes {
   margin-bottom: 12px;
 }
-
-.table-error{
-  background: #FF6A55;
-  color: #fff;
-  &:hover {
-    background: #FF6A55 !important;
+::v-deep() {
+  .table-error{
+    background: #FF6A55;
+    color: #fff;
+    &:hover {
+      background: #FF6A55 !important;
+    }
   }
-}
+    }
 </style>

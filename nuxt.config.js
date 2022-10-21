@@ -66,7 +66,7 @@ export default {
     redirect: {
       logout: '/login',
       callback: '/login',
-      login: null,
+      login: '/login',
       home: null,
     }
   },

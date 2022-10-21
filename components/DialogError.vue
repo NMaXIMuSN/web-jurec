@@ -52,7 +52,11 @@ export default {
   props: {
     time: {
       type: String,
-      require: true,
+      required: true,
+    },
+    userLogId: {
+      type: Number,
+      default: undefined,
     },
     value: Boolean,
   },
@@ -90,6 +94,7 @@ export default {
       this.$axios.post('/send_report', {
         description: this.reason,
         reason: this.type,
+        userlog: this.userLogId
       })
         .then(() => {
           this.errors = {
